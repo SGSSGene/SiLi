@@ -3,7 +3,7 @@
 /*! Overview
  * \page
  *
- * SiLi is a great autostorage only library (no heap allocation).
+ * SiLi is a auto-storage only library (no heap allocation).
  *
  * It uses **c++20** and its purpose is to be used on embedded system
  *

@@ -23,7 +23,7 @@ constexpr auto value() -> typename std::add_rvalue_reference<value_t<T>>::type;
  *
  * \caption Template Parameters
  * \param Row access row. Valid value [0-Row)
- * \param Col access column. Validvalue [0-Col)
+ * \param Col access column. Valid value [0-Col)
  *
  * \caption Parameters
  * \param m   _concept::Matrix
@@ -166,7 +166,7 @@ constexpr auto operator+(M const& m) {
     return details::apply(m, [](auto e) constexpr { return +e; });
 }
 
-/*! Elementwise addition
+/*! Element-wise addition
  * \shortexample l + r
  * \group Matrix Operations
  *

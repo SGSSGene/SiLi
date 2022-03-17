@@ -8,9 +8,9 @@ namespace SiLi {
 
 /*! Represents a matrix
  *
- * Fullfills the _concept::Matrix concept.
+ * Fulfills the _concept::Matrix concept.
  *
-  * If _rows or _cols is 1 it fullfills _concept::Vector.
+  * If _rows or _cols is 1 it fulfills _concept::Vector.
  *
  * \caption Template Parameters
  * \param _rows number of rows of the matrix, must be larger or equal to zero

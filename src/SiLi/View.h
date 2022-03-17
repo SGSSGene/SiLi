@@ -6,9 +6,9 @@ namespace SiLi {
 
 /*! Represents a view onto a matrix
  *
- * Fullfills the _concept::Matrix concept.
+ * Fulfills the _concept::Matrix concept.
  *
- * If _rows or _cols is 1 it fullfills the _concept::Vector concept.
+ * If _rows or _cols is 1 it fulfills the _concept::Vector concept.
  *
  * \caption Template Parameters
  * \param _rows number of rows of the view, must be larger or equal to zero
