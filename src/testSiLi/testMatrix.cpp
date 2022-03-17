@@ -87,7 +87,7 @@ TEST_CASE("make_mat", "[init]") {
         static_assert(8. == z(0, 1));
     }
 
-    SECTION("subsrtaction") {
+    SECTION("subtraction") {
         constexpr auto m1 = SiLi::Matrix{{{2., 3.}}};
         constexpr auto m2 = SiLi::Matrix{{{4., 5.}}};
         constexpr auto z  = m1 - m2; // Critical
@@ -99,7 +99,7 @@ TEST_CASE("make_mat", "[init]") {
         static_assert(-2. == z(0, 1));
     }
 
-    SECTION("substraction with type change") {
+    SECTION("subtraction with type change") {
         constexpr auto m1 = SiLi::Matrix{{{2., 3.}}};
         constexpr auto m2 = SiLi::Matrix{{{4, 5}}};
         constexpr auto z  = m1 - m2; // Critical
@@ -114,7 +114,7 @@ TEST_CASE("make_mat", "[init]") {
     }
 
 
-    SECTION("substraction - inplace") {
+    SECTION("subtraction - inplace") {
         constexpr auto m1 = SiLi::Matrix{{{2., 3.}}};
         constexpr auto m2 = SiLi::Matrix{{{4., 5.}}};
         constexpr auto z  = [=](auto x) {
@@ -128,7 +128,7 @@ TEST_CASE("make_mat", "[init]") {
         static_assert(-2. == z(0, 1));
     }
 
-    SECTION("substraction - inplace with different type") {
+    SECTION("subtraction - inplace with different type") {
         constexpr auto m1 = SiLi::Matrix{{{2., 3.}}};
         constexpr auto m2 = SiLi::Matrix{{{4, 5}}};
         constexpr auto z  = [=](auto x) {

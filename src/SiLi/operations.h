@@ -127,7 +127,7 @@ constexpr auto apply(L const& l, R const& r, Operator op) {
     auto ret = Matrix<rows_v<L>, cols_v<L>, U>{};
     for (size_t iy{0}; iy < rows_v<L>; ++iy) {
         for (size_t ix{0}; ix < cols_v<L>; ++ix) {
-            ret(ix, iy) = op(l(ix, iy), r(ix, iy));
+            ret(iy, ix) = op(l(iy, ix), r(iy, ix));
         }
     }
     return ret;
@@ -200,6 +200,15 @@ constexpr auto operator+(Matrix<_rows, _cols, T> l, Matrix<_rows, _cols, T> cons
     }
     return l;
 }
+template<size_t _rows, size_t _cols, typename T1, typename T2>
+constexpr auto operator+(Matrix<_rows, _cols, T1> l, Matrix<_rows, _cols, T2> const& r) {
+    auto res = Matrix<_rows, _cols, decltype(std::declval<T1>() + std::declval<T2>())>{};
+    for (size_t i{0}; i < _rows*_cols; ++i) {
+        res.data()[i] = l.data()[i] + r.data()[i];
+    }
+    return res;
+}
+
 
 
 /*! Elementwise addition
