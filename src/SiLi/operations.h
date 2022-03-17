@@ -87,7 +87,7 @@ constexpr auto at(V&& v) -> auto& {
  * \endcode
  */
 template <_concept::Matrix M>
-constexpr auto rows(M const& m) {
+constexpr auto rows(M const&) {
     return rows_v<M>;
 }
 
@@ -106,7 +106,7 @@ constexpr auto rows(M const& m) {
  * \endcode
  */
 template <_concept::Matrix M>
-constexpr auto cols(M const& m) {
+constexpr auto cols(M const&) {
     return cols_v<M>;
 }
 
@@ -166,7 +166,7 @@ constexpr auto operator+(M const& m) {
     return details::apply(m, [](auto e) constexpr { return +e; });
 }
 
-/*! Element-wise addition
+/*! Elementwise addition
  * \shortexample l + r
  * \group Matrix Operations
  *

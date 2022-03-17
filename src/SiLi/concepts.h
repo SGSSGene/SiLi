@@ -1,41 +1,48 @@
 #pragma once
 
+#include <cstddef>
 #include <type_traits>
 #include <utility>
 
 namespace SiLi {
 
-template<int, int, typename, typename...>
+template<size_t, size_t, typename, typename...>
 class Matrix;
 
-template<int, int, int, typename, bool, typename...>
+template<size_t,size_t,size_t, typename, bool, typename...>
 class View;
 
 
 template <typename T>
 struct is_matrix : std::false_type {};
 
-template<int _rows, int _cols, typename T>
+template<size_t _rows, size_t _cols, typename T>
 struct is_matrix<Matrix<_rows, _cols, T>> : std::true_type {};
-template<int _rows, int _cols, typename T>
+template<size_t _rows, size_t _cols, typename T>
 struct is_matrix<Matrix<_rows, _cols, T>&> : std::true_type {};
-template<int _rows, int _cols, typename T>
+template<size_t _rows, size_t _cols, typename T>
 struct is_matrix<Matrix<_rows, _cols, T>&&> : std::true_type {};
-template<int _rows, int _cols, typename T>
+template<size_t _rows, size_t _cols, typename T>
 struct is_matrix<Matrix<_rows, _cols, T> const&> : std::true_type {};
+
+template <typename T>
+constexpr bool is_matrix_v = is_matrix<T>::value;
 
 
 template <typename T>
 struct is_view : std::false_type {};
 
-template<int _rows, int _cols, int _stride, typename T, bool _transposed>
+template<size_t _rows, size_t _cols, size_t _stride, typename T, bool _transposed>
 struct is_view<View<_rows, _cols, _stride, T, _transposed>> : std::true_type {};
-template<int _rows, int _cols, int _stride, typename T, bool _transposed>
+template<size_t _rows, size_t _cols, size_t _stride, typename T, bool _transposed>
 struct is_view<View<_rows, _cols, _stride, T, _transposed>&> : std::true_type {};
-template<int _rows, int _cols, int _stride, typename T, bool _transposed>
+template<size_t _rows, size_t _cols, size_t _stride, typename T, bool _transposed>
 struct is_view<View<_rows, _cols, _stride, T, _transposed>&&> : std::true_type {};
-template<int _rows, int _cols, int _stride, typename T, bool _transposed>
+template<size_t _rows, size_t _cols, size_t _stride, typename T, bool _transposed>
 struct is_view<View<_rows, _cols, _stride, T, _transposed> const&> : std::true_type {};
+
+template <typename T>
+constexpr bool is_view_v = is_view<T>::value;
 
 namespace _concept {
 /*! Concept of a _concept::Matrix.
@@ -46,10 +53,9 @@ namespace _concept {
  * Both can be used everywhere the _concept::Matrix concept is needed.
  */
 template <typename T>
-concept Matrix = is_matrix<T>::value or is_view<T>::value;
+concept Matrix = is_matrix_v<T> or is_view_v<T>;
 
 }
-
 // value_t for finding the underlying value
 namespace detail {
 template <typename T>
@@ -71,22 +77,22 @@ using value_t = typename detail::value_t<T>::type;
 // find the underlying rows, cols and stride
 namespace detail {
 template <typename T> struct rows;
-template <_concept::Matrix V> struct rows<V> : std::integral_constant<int, V::Rows> {};
-template <_concept::Matrix V> struct rows<V&> : std::integral_constant<int, V::Rows> {};
-template <_concept::Matrix V> struct rows<V&&> : std::integral_constant<int, V::Rows> {};
-template <_concept::Matrix V> struct rows<V const&> : std::integral_constant<int, V::Rows> {};
+template <_concept::Matrix V> struct rows<V> : std::integral_constant<size_t, V::Rows> {};
+template <_concept::Matrix V> struct rows<V&> : std::integral_constant<size_t, V::Rows> {};
+template <_concept::Matrix V> struct rows<V&&> : std::integral_constant<size_t, V::Rows> {};
+template <_concept::Matrix V> struct rows<V const&> : std::integral_constant<size_t, V::Rows> {};
 
 template <typename T> struct cols;
-template <_concept::Matrix V> struct cols<V> : std::integral_constant<int, V::Cols> {};
-template <_concept::Matrix V> struct cols<V&> : std::integral_constant<int, V::Cols> {};
-template <_concept::Matrix V> struct cols<V&&> : std::integral_constant<int, V::Cols> {};
-template <_concept::Matrix V> struct cols<V const&> : std::integral_constant<int, V::Cols> {};
+template <_concept::Matrix V> struct cols<V> : std::integral_constant<size_t, V::Cols> {};
+template <_concept::Matrix V> struct cols<V&> : std::integral_constant<size_t, V::Cols> {};
+template <_concept::Matrix V> struct cols<V&&> : std::integral_constant<size_t, V::Cols> {};
+template <_concept::Matrix V> struct cols<V const&> : std::integral_constant<size_t, V::Cols> {};
 
 template <typename T> struct stride;
-template <_concept::Matrix V> struct stride<V> : std::integral_constant<int, V::Stride> {};
-template <_concept::Matrix V> struct stride<V&> : std::integral_constant<int, V::Stride> {};
-template <_concept::Matrix V> struct stride<V&&> : std::integral_constant<int, V::Stride> {};
-template <_concept::Matrix V> struct stride<V const&> : std::integral_constant<int, V::Stride> {};
+template <_concept::Matrix V> struct stride<V> : std::integral_constant<size_t, V::Stride> {};
+template <_concept::Matrix V> struct stride<V&> : std::integral_constant<size_t, V::Stride> {};
+template <_concept::Matrix V> struct stride<V&&> : std::integral_constant<size_t, V::Stride> {};
+template <_concept::Matrix V> struct stride<V const&> : std::integral_constant<size_t, V::Stride> {};
 
 template <typename T> struct transposed;
 template <_concept::Matrix V> struct transposed<V> : std::integral_constant<bool, V::Transposed> {};
@@ -95,10 +101,10 @@ template <_concept::Matrix V> struct transposed<V&&> : std::integral_constant<bo
 template <_concept::Matrix V> struct transposed<V const&> : std::integral_constant<bool, V::Transposed> {};
 }
 
-template <typename T> constexpr int  rows_v       = detail::rows<T>::value;
-template <typename T> constexpr int  cols_v       = detail::cols<T>::value;
-template <typename T> constexpr int  stride_v     = detail::stride<T>::value;
-template <typename T> constexpr bool transposed_v = detail::transposed<T>::value;
+template <typename T> constexpr size_t rows_v       = detail::rows<T>::value;
+template <typename T> constexpr size_t cols_v       = detail::cols<T>::value;
+template <typename T> constexpr size_t stride_v     = detail::stride<T>::value;
+template <typename T> constexpr bool   transposed_v = detail::transposed<T>::value;
 
 template <_concept::Matrix T>
 constexpr bool is_vector_v = (rows_v<T> == 1 or cols_v<T> == 1);
@@ -114,7 +120,7 @@ concept Vector = is_vector_v<T>;
 }
 
 template <_concept::Vector T>
-constexpr int length_v = ((detail::rows<T>::value==1)?detail::cols<T>::value:detail::rows<T>::value);
+constexpr size_t length_v = ((detail::rows<T>::value==1)?detail::cols<T>::value:detail::rows<T>::value);
 
 
 namespace details {
@@ -195,7 +201,7 @@ constexpr bool for_each_constexpr(L&& lambda) {
 
 
 template <_concept::Matrix V>
-constexpr auto get(V&& v, int row, int col) -> auto& {
+constexpr auto get(V&& v, size_t row, size_t col) -> auto& {
     if constexpr (transposed_v<V>) {
         return v.data()[row + col * stride_v<V>];
     } else {
@@ -204,7 +210,7 @@ constexpr auto get(V&& v, int row, int col) -> auto& {
 }
 
 template <_concept::Matrix V>
-constexpr auto get(V&& v, int entry) -> auto& requires(rows_v<V> == 1 or cols_v<V> == 1) {
+constexpr auto get(V&& v, size_t entry) -> auto& requires(rows_v<V> == 1 or cols_v<V> == 1) {
     if constexpr ((rows_v<V> == 1 and not transposed_v<V>) or (cols_v<V> == 1 and transposed_v<V>)) {
         return v.data()[entry];
     } else {
@@ -212,7 +218,7 @@ constexpr auto get(V&& v, int entry) -> auto& requires(rows_v<V> == 1 or cols_v<
     }
 }
 
-template <int row, int col, _concept::Matrix M>
+template <size_t row, size_t col, _concept::Matrix M>
 constexpr auto get(M&& m) -> auto& {
     if constexpr (transposed_v<M>) {
         return m.data()[row + col * stride_v<M>];
@@ -221,7 +227,7 @@ constexpr auto get(M&& m) -> auto& {
     }
 }
 
-template <int entry, _concept::Matrix M>
+template <size_t entry, _concept::Matrix M>
 constexpr auto get(M&& m) -> auto& requires(rows_v<M> == 1 or cols_v<M> == 1) {
     if constexpr ((rows_v<M> == 1 and not transposed_v<M>) or (cols_v<M> == 1 and transposed_v<M>)) {
         return m.data()[entry];

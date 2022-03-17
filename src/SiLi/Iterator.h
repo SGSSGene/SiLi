@@ -7,8 +7,8 @@ namespace SiLi {
 template <_concept::Matrix V>
 struct Iterator {
     V& v;
-    int row{0};
-    int col{0};
+    size_t row{0};
+    size_t col{0};
     auto operator++() -> auto& {
         col += 1;
         if (col >= cols_v<V>) {
