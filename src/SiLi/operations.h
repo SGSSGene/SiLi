@@ -40,9 +40,9 @@ constexpr auto value() -> typename std::add_rvalue_reference<value_t<T>>::type;
  */
 template <int Row, int Col, _concept::Matrix M>
 constexpr auto at(M&& m) -> auto& {
-	static_assert(0 <= Row and Row < rows_v<M>, "accessing outside of valid range");
-	static_assert(0 <= Col and Col < cols_v<M>, "accessing outside of valid range");
-	return m.template at<Row, Col>();
+    static_assert(0 <= Row and Row < rows_v<M>, "accessing outside of valid range");
+    static_assert(0 <= Col and Col < cols_v<M>, "accessing outside of valid range");
+    return m.template at<Row, Col>();
 }
 
 /*! Access element
@@ -66,11 +66,11 @@ constexpr auto at(M&& m) -> auto& {
  */
 template <int Idx, _concept::Vector V>
 constexpr auto at(V&& v) -> auto& {
-	if constexpr (cols_v<V> == 1) {
-		return at<Idx, 0>(v);
-	} else {
-		return at<0, Idx>(v);
-	}
+    if constexpr (cols_v<V> == 1) {
+        return at<Idx, 0>(v);
+    } else {
+        return at<0, Idx>(v);
+    }
 }
 
 /*! Number of rows
@@ -88,7 +88,7 @@ constexpr auto at(V&& v) -> auto& {
  */
 template <_concept::Matrix M>
 constexpr auto rows(M const& m) {
-	return rows_v<M>;
+    return rows_v<M>;
 }
 
 
@@ -107,42 +107,42 @@ constexpr auto rows(M const& m) {
  */
 template <_concept::Matrix M>
 constexpr auto cols(M const& m) {
-	return cols_v<M>;
+    return cols_v<M>;
 }
 
 namespace details {
 template <_concept::Matrix V, typename Operator>
 constexpr auto apply(V const& v, Operator op) {
-	using U = decltype(op(value<V>()));
-	auto ret = Matrix<rows_v<V>, cols_v<V>, U>{};
-	for_each_constexpr<V>([&]<auto row, auto col>() {
-		at<row, col>(ret) = op(at<row, col>(v));
-	});
-	return ret;
+    using U = decltype(op(value<V>()));
+    auto ret = Matrix<rows_v<V>, cols_v<V>, U>{};
+    for_each_constexpr<V>([&]<auto row, auto col>() {
+        at<row, col>(ret) = op(at<row, col>(v));
+    });
+    return ret;
 }
 
 template <_concept::Matrix L, _concept::Matrix R, typename Operator> requires (rows_v<L> == rows_v<R> and cols_v<L> == cols_v<R>)
 constexpr auto apply(L const& l, R const& r, Operator op) {
-	using U = decltype(op(value<L>(), value_t<R>()));
-	auto ret = Matrix<rows_v<L>, cols_v<L>, U>{};
-	for_each_constexpr<L>([&]<auto row, auto col>() {
-		at<row, col>(ret) = op(at<row, col>(l), at<row, col>(r));
-	});
-	return ret;
+    using U = decltype(op(value<L>(), value_t<R>()));
+    auto ret = Matrix<rows_v<L>, cols_v<L>, U>{};
+    for_each_constexpr<L>([&]<auto row, auto col>() {
+        at<row, col>(ret) = op(at<row, col>(l), at<row, col>(r));
+    });
+    return ret;
 }
 
 template <_concept::Matrix V, typename Operator>
 constexpr void self_assign_apply(V&& v, Operator op) {
-	for_each_constexpr<V>([&]<auto row, auto col>() {
-		op(at<row, col>(v));
-	});
+    for_each_constexpr<V>([&]<auto row, auto col>() {
+        op(at<row, col>(v));
+    });
 }
 
 template <_concept::Matrix L, _concept::Matrix R, typename Operator> requires (rows_v<L> == rows_v<R> and cols_v<L> == cols_v<R>)
 constexpr void self_assign_apply(L&& l, R const& r, Operator op) {
-	for_each_constexpr<L>([&]<auto row, auto col>() {
-		op(at<row, col>(l), at<row, col>(r));
-	});
+    for_each_constexpr<L>([&]<auto row, auto col>() {
+        op(at<row, col>(l), at<row, col>(r));
+    });
 }
 }
 
@@ -163,7 +163,7 @@ constexpr void self_assign_apply(L&& l, R const& r, Operator op) {
  */
 template <_concept::Matrix M>
 constexpr auto operator+(M const& m) {
-	return details::apply(m, [](auto e) constexpr { return +e; });
+    return details::apply(m, [](auto e) constexpr { return +e; });
 }
 
 /*! Elementwise addition
@@ -188,7 +188,7 @@ constexpr auto operator+(M const& m) {
  */
 template <_concept::Matrix L, _concept::Matrix R>
 constexpr auto operator+(L const& l, R const& r) {
-	return details::apply(l, r, [](auto _l, auto _r) constexpr { return _l + _r; });
+    return details::apply(l, r, [](auto _l, auto _r) constexpr { return _l + _r; });
 }
 
 /*! Elementwise addition
@@ -213,9 +213,9 @@ constexpr auto operator+(L const& l, R const& r) {
  */
 template <_concept::Matrix L, _concept::Matrix R>
 constexpr auto operator+=(L& l, R const& r) -> auto& {
-//	l = l + r;
-	details::self_assign_apply(l, r, [](auto& _l, auto _r) constexpr { _l += _r; });
-	return l;
+//    l = l + r;
+    details::self_assign_apply(l, r, [](auto& _l, auto _r) constexpr { _l += _r; });
+    return l;
 }
 
 /*! Elementwise negation
@@ -235,7 +235,7 @@ constexpr auto operator+=(L& l, R const& r) -> auto& {
  */
 template <_concept::Matrix M>
 constexpr auto operator-(M const& m) {
-	return details::apply(m, [](auto e) constexpr { return -e; });
+    return details::apply(m, [](auto e) constexpr { return -e; });
 }
 
 /*! Elementwise subtraction
@@ -260,7 +260,7 @@ constexpr auto operator-(M const& m) {
  */
 template <_concept::Matrix L, _concept::Matrix R>
 constexpr auto operator-(L const& l, R const& r) {
-	return details::apply(l, r, [](auto _l, auto _r) constexpr { return _l - _r; });
+    return details::apply(l, r, [](auto _l, auto _r) constexpr { return _l - _r; });
 }
 
 /*! Elementwise subtraction
@@ -285,8 +285,8 @@ constexpr auto operator-(L const& l, R const& r) {
  */
 template <_concept::Matrix L, _concept::Matrix R>
 constexpr auto operator-=(L& l, R const& r) -> auto& {
-	details::self_assign_apply(l, r, [](auto& _l, auto _r) constexpr { _l -= _r; });
-	return l;
+    details::self_assign_apply(l, r, [](auto& _l, auto _r) constexpr { _l -= _r; });
+    return l;
 }
 
 /*! Matrix multiplication
@@ -312,23 +312,23 @@ constexpr auto operator-=(L& l, R const& r) -> auto& {
  */
 template <_concept::Matrix L, _concept::Matrix R> requires (L::Cols == R::Rows)
 constexpr auto operator*(L const& l, R const& r) {
-	using U = decltype(std::declval<typename L::value_t>() * std::declval<typename R::value_t>());
+    using U = decltype(std::declval<typename L::value_t>() * std::declval<typename R::value_t>());
 
-	if constexpr (L::Rows == 1 and R::Cols == 1) {
-		auto ret = U{};
-		for_constexpr<0, L::Cols>([&]<int I>() {
-			ret += at<I>(l) * at<I>(r);
-		});
-		return Matrix{{{ret}}};
-	} else {
-		auto ret = Matrix<L::Rows, R::Cols, U>{};
-		for_constexpr<0, L::Rows>([&]<int row>() {
-			for_constexpr<0, R::Cols>([&]<int col>() {
-				at<row, col>(ret) = U{view_row<row>(l) * view_col<col>(r)};
-			});
-		});
-		return ret;
-	}
+    if constexpr (L::Rows == 1 and R::Cols == 1) {
+        auto ret = U{};
+        for_constexpr<0, L::Cols>([&]<int I>() {
+            ret += at<I>(l) * at<I>(r);
+        });
+        return Matrix{{{ret}}};
+    } else {
+        auto ret = Matrix<L::Rows, R::Cols, U>{};
+        for_constexpr<0, L::Rows>([&]<int row>() {
+            for_constexpr<0, R::Cols>([&]<int col>() {
+                at<row, col>(ret) = U{view_row<row>(l) * view_col<col>(r)};
+            });
+        });
+        return ret;
+    }
 }
 
 /*! Scalar multiplication
@@ -349,7 +349,7 @@ constexpr auto operator*(L const& l, R const& r) {
  */
 template <_concept::Matrix L>
 constexpr auto operator*(L const& l, value_t<L> const& s) {
-	return details::apply(l, [s](auto _l) { return _l * s; });
+    return details::apply(l, [s](auto _l) { return _l * s; });
 }
 
 /*! Scalar multiplication
@@ -370,7 +370,7 @@ constexpr auto operator*(L const& l, value_t<L> const& s) {
  */
 template <_concept::Matrix R>
 constexpr auto operator*(value_t<R> const& s, R&& r) {
-	return std::forward<R>(r) * s;
+    return std::forward<R>(r) * s;
 }
 
 /*! Scalar multiplication
@@ -391,8 +391,8 @@ constexpr auto operator*(value_t<R> const& s, R&& r) {
  */
 template <_concept::Matrix L>
 constexpr auto operator*=(L&& l, value_t<L> const& s) -> auto& {
-	details::self_assign_apply(l, [s](auto& _l) { _l *= s; });
-	return l;
+    details::self_assign_apply(l, [s](auto& _l) { _l *= s; });
+    return l;
 }
 
 /*! Divide elements by a scalar
@@ -413,7 +413,7 @@ constexpr auto operator*=(L&& l, value_t<L> const& s) -> auto& {
  */
 template <_concept::Matrix L>
 constexpr auto operator/(L const& l, value_t<L> const& s) {
-	return details::apply(l, [s](auto _l) { return _l / s; });
+    return details::apply(l, [s](auto _l) { return _l / s; });
 }
 
 
@@ -435,8 +435,8 @@ constexpr auto operator/(L const& l, value_t<L> const& s) {
  */
 template <_concept::Matrix L>
 constexpr auto operator/=(L&& l, value_t<L> const& s) -> L& {
-	details::self_assign_apply(l, [s](auto& _l) { _l /= s; });
-	return l;
+    details::self_assign_apply(l, [s](auto& _l) { _l /= s; });
+    return l;
 }
 
 /*! Elementwise comparision
@@ -463,9 +463,9 @@ constexpr auto operator/=(L&& l, value_t<L> const& s) -> L& {
  */
 template <_concept::Matrix L, _concept::Matrix R> requires (L::Rows == R::Rows and L::Cols == R::Cols)
 constexpr auto operator==(L const& l, R const& r) -> bool {
-	return for_each_constexpr<L>([&]<int row, int col>() {
-		return at<row, col>(l) == at<row, col>(r);
-	});
+    return for_each_constexpr<L>([&]<int row, int col>() {
+        return at<row, col>(l) == at<row, col>(r);
+    });
 }
 
 /*! Elementwise comparision
@@ -492,7 +492,7 @@ constexpr auto operator==(L const& l, R const& r) -> bool {
  */
 template <_concept::Matrix L, _concept::Matrix R> requires (L::Rows == R::Rows and L::Cols == R::Cols)
 constexpr auto operator!=(L const& l, R const& r) -> bool {
-	return not (l == r);
+    return not (l == r);
 }
 
 /*! Diagonal view
@@ -516,11 +516,11 @@ constexpr auto operator!=(L const& l, R const& r) -> bool {
  */
 template <_concept::Matrix M>
 constexpr auto view_diag(M&& m) {
-	using U = value_t<M>;
-	using std::min;
-	constexpr auto length = min(cols_v<M>, rows_v<M>);
-	constexpr auto stride = stride_v<M>+1;
-	return View<length, 1, stride, U, false>{m.data()};
+    using U = value_t<M>;
+    using std::min;
+    constexpr auto length = min(cols_v<M>, rows_v<M>);
+    constexpr auto stride = stride_v<M>+1;
+    return View<length, 1, stride, U, false>{m.data()};
 }
 
 /*! Diagonal
@@ -540,7 +540,7 @@ constexpr auto view_diag(M&& m) {
  */
 template <_concept::Matrix M>
 constexpr auto diag(M const& m) {
-	return Matrix{view_diag(m)};
+    return Matrix{view_diag(m)};
 }
 
 /*! Super diagonal view
@@ -566,7 +566,7 @@ constexpr auto diag(M const& m) {
  */
 template <_concept::Matrix M>
 constexpr auto view_upper_diag(M&& m) {
-	return view_diag(view<0, 1, End, End>(m));
+    return view_diag(view<0, 1, End, End>(m));
 }
 
 /*! View
@@ -603,57 +603,57 @@ constexpr auto view_upper_diag(M&& m) {
 template <int start_row, int start_col, int end_row, int end_col, _concept::Matrix M>
     requires (end_row <= rows_v<M> and end_col <= cols_v<M>)
 constexpr auto view(M&& m) {
-	using U = value_t<M>;
+    using U = value_t<M>;
 
-	constexpr auto rows       = end_row - start_row;
-	constexpr auto cols       = end_col - start_col;
-	constexpr auto stride     = stride_v<M>;
-	constexpr auto transposed = transposed_v<M>;
+    constexpr auto rows       = end_row - start_row;
+    constexpr auto cols       = end_col - start_col;
+    constexpr auto stride     = stride_v<M>;
+    constexpr auto transposed = transposed_v<M>;
 
-	if constexpr (not transposed) {
-		return View<rows, cols, stride, U, transposed>{m.data() + start_col + start_row * stride};
-	} else {
-		return View<rows, cols, stride, U, transposed>{m.data() + start_row + start_col * stride};
-	}
+    if constexpr (not transposed) {
+        return View<rows, cols, stride, U, transposed>{m.data() + start_col + start_row * stride};
+    } else {
+        return View<rows, cols, stride, U, transposed>{m.data() + start_row + start_col * stride};
+    }
 }
 
 template <int start_row, int start_col, CEnd end_row, int end_col, _concept::Matrix V>
 constexpr auto view(V&& v) {
-	return view<start_row, start_col, rows_v<V>, end_col>(std::forward<V>(v));
+    return view<start_row, start_col, rows_v<V>, end_col>(std::forward<V>(v));
 }
 template <int start_row, int start_col, int end_row, CEnd end_col, _concept::Matrix V>
 constexpr auto view(V&& v) {
-	return view<start_row, start_col, end_row, cols_v<V>>(std::forward<V>(v));
+    return view<start_row, start_col, end_row, cols_v<V>>(std::forward<V>(v));
 }
 template <int start_row, int start_col, CEnd end_row, CEnd end_col, _concept::Matrix V>
 constexpr auto view(V&& v) {
-	return view<start_row, start_col, rows_v<V>, cols_v<V>>(std::forward<V>(v));
+    return view<start_row, start_col, rows_v<V>, cols_v<V>>(std::forward<V>(v));
 }
 
 template <int start_row, int end_row, _concept::Matrix V> requires (end_row <= rows_v<V> and cols_v<V> == 1)
 constexpr auto view(V&& v) {
-	return view<start_row, 0, end_row, 1>(v);
+    return view<start_row, 0, end_row, 1>(v);
 }
 
 template <int start_col, int end_col, _concept::Matrix V> requires (end_col <= cols_v<V> and rows_v<V> == 1 and cols_v<V> != 1)
 constexpr auto view(V&& v) {
-	return view<0, start_col, 1, end_col>(v);
+    return view<0, start_col, 1, end_col>(v);
 }
 
 template <int start, CEnd end, _concept::Matrix V>
 constexpr auto view(V&& v) {
-	return view<start, length_v<V>>(std::forward<V>(v));
+    return view<start, length_v<V>>(std::forward<V>(v));
 }
 
 
 template <int _row, _concept::Matrix V>
 constexpr auto view_row(V&& v) {
-	return view<_row, 0, _row+1, cols_v<V>>(std::forward<V>(v));
+    return view<_row, 0, _row+1, cols_v<V>>(std::forward<V>(v));
 }
 
 template <int _col, _concept::Matrix V>
 constexpr auto view_col(V&& v) {
-	return view<0, _col, rows_v<V>, _col+1>(std::forward<V>(v));
+    return view<0, _col, rows_v<V>, _col+1>(std::forward<V>(v));
 }
 
 /*! Joins rows
@@ -679,10 +679,10 @@ constexpr auto view_col(V&& v) {
  */
 template <_concept::Matrix L, _concept::Matrix R> requires (L::Rows == R::Rows)
 constexpr auto join_rows(L const& l, R const& r) {
-	auto matrix = Matrix<L::Rows, L::Cols + R::Cols, typename L::value_t>{};
-	view<0,       0, L::Rows,         L::Cols>(matrix) = l;
-	view<0, L::Cols, R::Rows, L::Cols+R::Cols>(matrix) = r;
-	return matrix;
+    auto matrix = Matrix<L::Rows, L::Cols + R::Cols, typename L::value_t>{};
+    view<0,       0, L::Rows,         L::Cols>(matrix) = l;
+    view<0, L::Cols, R::Rows, L::Cols+R::Cols>(matrix) = r;
+    return matrix;
 }
 
 /*! Joins columns
@@ -710,56 +710,56 @@ constexpr auto join_rows(L const& l, R const& r) {
  */
 template <_concept::Matrix L, _concept::Matrix R> requires (L::Cols == R::Cols)
 constexpr auto join_cols(L const& l, R const& r) {
-	auto matrix = Matrix<L::Rows+R::Rows, L::Cols, typename L::value_t>{};
-	view<      0, 0,         L::Rows, L::Cols>(matrix) = l;
-	view<L::Rows, 0, L::Rows+R::Rows, R::Cols>(matrix) = r;
-	return matrix;
+    auto matrix = Matrix<L::Rows+R::Rows, L::Cols, typename L::value_t>{};
+    view<      0, 0,         L::Rows, L::Cols>(matrix) = l;
+    view<L::Rows, 0, L::Rows+R::Rows, R::Cols>(matrix) = r;
+    return matrix;
 }
 
 // !TODO needs unit tests
 // lu decomposition, returns L value
 template<_concept::Matrix V> requires (rows_v<V> == cols_v<V>)
 constexpr auto luDecomposition_L(V const& v) {
-	using T = std::decay_t<value_t<V>>;
+    using T = std::decay_t<value_t<V>>;
 
-	constexpr auto N = rows_v<V>;
-	auto L = Matrix<N, N, T>{};
+    constexpr auto N = rows_v<V>;
+    auto L = Matrix<N, N, T>{};
 
-	for_constexpr<0, N>([&]<auto K>() {
-		auto kRow = view_row<K>(L);
-		auto kCol = view_col<K>(L);
-		for_constexpr<K, N>([&]<auto I>() {
-			at<K, I>(L) = at<K, I>(v) - T{kRow * view_col<I>(L)};
-		});
-		for_constexpr<K+1, N>([&]<auto I>() {
-			at<I, K>(L) = (at<I, K>(v) - T{view_row<I>(L) * kCol}) / at<K, K>(L);
-		});
-	});
-	return L;
+    for_constexpr<0, N>([&]<auto K>() {
+        auto kRow = view_row<K>(L);
+        auto kCol = view_col<K>(L);
+        for_constexpr<K, N>([&]<auto I>() {
+            at<K, I>(L) = at<K, I>(v) - T{kRow * view_col<I>(L)};
+        });
+        for_constexpr<K+1, N>([&]<auto I>() {
+            at<I, K>(L) = (at<I, K>(v) - T{view_row<I>(L) * kCol}) / at<K, K>(L);
+        });
+    });
+    return L;
 }
 
 
 // compute 1x1 determinant
 template <_concept::Matrix V> requires (V::Rows == 1 and V::Cols == 1)
 constexpr auto det(V const& v) {
-	return at<0, 0>(v);
+    return at<0, 0>(v);
 }
 
 // compute 2x2 determinant
 template <_concept::Matrix V> requires (V::Rows == 2 and V::Cols == 2)
 constexpr auto det(V const& v) {
-	return at<0, 0>(v)*at<1, 1>(v) - at<0, 1>(v)*at<1, 0>(v);
+    return at<0, 0>(v)*at<1, 1>(v) - at<0, 1>(v)*at<1, 0>(v);
 }
 
 // compute 3x3 determinant
 template <_concept::Matrix V> requires (V::Rows == 3 and V::Cols == 3)
 constexpr auto det(V const& v) {
-	return   (at<0, 0>(v)*at<1, 1>(v)*at<2, 2>(v)
-	        + at<0, 1>(v)*at<1, 2>(v)*at<2, 0>(v)
-	        + at<0, 2>(v)*at<1, 0>(v)*at<2, 1>(v))
-	       - (at<0, 2>(v)*at<1, 1>(v)*at<2, 0>(v)
-	        + at<0, 1>(v)*at<1, 0>(v)*at<2, 2>(v)
-	        + at<0, 0>(v)*at<1, 2>(v)*at<2, 1>(v));
+    return   (at<0, 0>(v)*at<1, 1>(v)*at<2, 2>(v)
+            + at<0, 1>(v)*at<1, 2>(v)*at<2, 0>(v)
+            + at<0, 2>(v)*at<1, 0>(v)*at<2, 1>(v))
+           - (at<0, 2>(v)*at<1, 1>(v)*at<2, 0>(v)
+            + at<0, 1>(v)*at<1, 0>(v)*at<2, 2>(v)
+            + at<0, 0>(v)*at<1, 2>(v)*at<2, 1>(v));
 }
 
 /*! Compute determinant
@@ -778,26 +778,26 @@ constexpr auto det(V const& v) {
  */
 template <_concept::Matrix M> requires (M::Rows == M::Cols and M::Rows > 3)
 constexpr auto det(M const& m) {
-	using T = typename M::value_t;
-	auto retValue = T{1};
+    using T = typename M::value_t;
+    auto retValue = T{1};
 
-	auto L        = luDecomposition_L(m);
+    auto L        = luDecomposition_L(m);
 
-	for_constexpr<0, M::Rows>([&]<int i>() {
-		retValue *= at<i, i>(L);
-	});
+    for_constexpr<0, M::Rows>([&]<int i>() {
+        retValue *= at<i, i>(L);
+    });
 
-	using std::isfinite;
-	if (not isfinite(retValue)) {
-		retValue = T{0};
-	}
-	return retValue;
+    using std::isfinite;
+    if (not isfinite(retValue)) {
+        retValue = T{0};
+    }
+    return retValue;
 }
 
 //element wise product
 template <_concept::Matrix L, _concept::Matrix R> requires (L::Rows == R::Rows and L::Cols == R::Cols)
 constexpr auto element_multi(L const& l, R const& r) {
-	return details::apply(l, r, [](auto _l, auto _r) constexpr { return _l * _r; });
+    return details::apply(l, r, [](auto _l, auto _r) constexpr { return _l * _r; });
 }
 
 /*! Cross product of two vectors.
@@ -825,12 +825,12 @@ constexpr auto element_multi(L const& l, R const& r) {
  */
 template <_concept::Vector L, _concept::Vector R> requires (length_v<R> == 3 and length_v<L> == 3)
 constexpr auto cross(L const& l, R const& r) {
-	using U = decltype(std::declval<typename L::value_t>() * std::declval<typename R::value_t>());
-	auto ret = Matrix<3, 1, U>{};
-	ret(0) = l(1) * r(2) - l(2) * r(1);
-	ret(1) = l(2) * r(0) - l(0) * r(2);
-	ret(2) = l(0) * r(1) - l(1) * r(0);
-	return ret;
+    using U = decltype(std::declval<typename L::value_t>() * std::declval<typename R::value_t>());
+    auto ret = Matrix<3, 1, U>{};
+    ret(0) = l(1) * r(2) - l(2) * r(1);
+    ret(1) = l(2) * r(0) - l(0) * r(2);
+    ret(2) = l(0) * r(1) - l(1) * r(0);
+    return ret;
 }
 
 /*! Sum of all elements.
@@ -849,11 +849,11 @@ constexpr auto cross(L const& l, R const& r) {
  */
 template <_concept::Matrix M>
 constexpr auto sum(M const& m) {
-	auto acc = value_t<M>{};
-	for_each_constexpr<M>([&]<auto row, auto col>() {
-		acc += at<row, col>(m);
-	});
-	return acc;
+    auto acc = value_t<M>{};
+    for_each_constexpr<M>([&]<auto row, auto col>() {
+        acc += at<row, col>(m);
+    });
+    return acc;
 }
 
 /*! Sum of each row.
@@ -873,12 +873,12 @@ constexpr auto sum(M const& m) {
  */
 template <_concept::Matrix M>
 constexpr auto sum_rows(M const& m) {
-	using T = value_t<M>;
-	auto c = Matrix<rows_v<M>, 1, T>{};
-	for_constexpr<0, rows_v<M>>([&]<int row>() {
-		at<row>(c) = sum(view_row<row>(m));
-	});
-	return c;
+    using T = value_t<M>;
+    auto c = Matrix<rows_v<M>, 1, T>{};
+    for_constexpr<0, rows_v<M>>([&]<int row>() {
+        at<row>(c) = sum(view_row<row>(m));
+    });
+    return c;
 }
 
 /*! Sum of each column.
@@ -897,12 +897,12 @@ constexpr auto sum_rows(M const& m) {
  */
 template <_concept::Matrix M>
 constexpr auto sum_cols(M const& m) {
-	using T = value_t<M>;
-	auto c = Matrix<1, cols_v<M>, T>{};
-	for_constexpr<0, cols_v<M>>([&]<int col>() {
-		at<col>(c) = sum(view_col<col>(m));
-	});
-	return c;
+    using T = value_t<M>;
+    auto c = Matrix<1, cols_v<M>, T>{};
+    for_constexpr<0, cols_v<M>>([&]<int col>() {
+        at<col>(c) = sum(view_col<col>(m));
+    });
+    return c;
 }
 
 
@@ -910,52 +910,52 @@ constexpr auto sum_cols(M const& m) {
 // inverse of 1x1
 template <_concept::Matrix V> requires (V::Rows == V::Cols and V::Rows == 1)
 constexpr auto inv(V v) -> std::tuple<typename V::value_t, V> {
-	using T = typename V::value_t;
-	using std::abs;
-	auto d = det(v);
-	if (abs(d) < 1.e-5) {
-		return {at<0, 0>(v), v};
-	}
+    using T = typename V::value_t;
+    using std::abs;
+    auto d = det(v);
+    if (abs(d) < 1.e-5) {
+        return {at<0, 0>(v), v};
+    }
 
-	at<0, 0>(v) = T(1) / at<0, 0>(v);
-	return {d, v};
+    at<0, 0>(v) = T(1) / at<0, 0>(v);
+    return {d, v};
 }
 
 // inverse of 2x2
 template <_concept::Matrix V> requires (V::Rows == V::Cols and V::Rows == 2)
 constexpr auto inv(V v) -> std::tuple<typename V::value_t, V> {
-	using T = typename V::value_t;
-	using std::abs;
-	auto d = det(v);
-	if (abs(d) < 1.e-5) {
-		return {at<0, 0>(v), v};
-	}
-	auto c = T(1) / d;
-	return {d, Matrix{{{ at<1, 1>(v)*c, -at<0, 1>(v)*c},
-	                   {-at<1, 0>(v)*c,  at<0, 0>(v)*c}}}};
+    using T = typename V::value_t;
+    using std::abs;
+    auto d = det(v);
+    if (abs(d) < 1.e-5) {
+        return {at<0, 0>(v), v};
+    }
+    auto c = T(1) / d;
+    return {d, Matrix{{{ at<1, 1>(v)*c, -at<0, 1>(v)*c},
+                       {-at<1, 0>(v)*c,  at<0, 0>(v)*c}}}};
 
 }
 
 //inverse of 3x3
 template <_concept::Matrix M> requires (M::Rows == M::Cols and M::Rows == 3)
 constexpr auto inv(M const& m) -> std::tuple<typename M::value_t, M> {
-	using T = typename M::value_t;
-	using std::abs;
-	auto d = det(m);
-	if (abs(d) < 1.e-5) {
-		return {at<0, 0>(m), m};
-	}
-	auto c = T(1) / d;
-	auto ret = M{};
+    using T = typename M::value_t;
+    using std::abs;
+    auto d = det(m);
+    if (abs(d) < 1.e-5) {
+        return {at<0, 0>(m), m};
+    }
+    auto c = T(1) / d;
+    auto ret = M{};
 
-	for_each_constexpr<M>([&]<int row, int col>() {
-		auto tl = at<(row+1)%3, (col+1)%3>(m);
-		auto br = at<(row+2)%3, (col+2)%3>(m);
-		auto tr = at<(row+1)%3, (col+2)%3>(m);
-		auto bl = at<(row+2)%3, (col+1)%3>(m);
-		at<col, row>(ret) = (tl*br-tr*bl) * c;
-	});
-	return {d, ret};
+    for_each_constexpr<M>([&]<int row, int col>() {
+        auto tl = at<(row+1)%3, (col+1)%3>(m);
+        auto br = at<(row+2)%3, (col+2)%3>(m);
+        auto tr = at<(row+1)%3, (col+2)%3>(m);
+        auto bl = at<(row+2)%3, (col+1)%3>(m);
+        at<col, row>(ret) = (tl*br-tr*bl) * c;
+    });
+    return {d, ret};
 }
 
 /*! Compute inverse
@@ -976,31 +976,31 @@ constexpr auto inv(M const& m) -> std::tuple<typename M::value_t, M> {
  */
 template <_concept::Matrix M> requires (M::Rows == M::Cols and M::Rows > 3)
 constexpr auto inv(M m) -> std::tuple<typename M::value_t, M> {
-	using T = typename M::value_t;
-	constexpr int N = M::Rows;
-	auto det        = T{1};
+    using T = typename M::value_t;
+    constexpr int N = M::Rows;
+    auto det        = T{1};
 
-	bool failed{false};
-	for_constexpr<0, N>([&]<int p>() -> bool {
-		auto pivot = at<p, p>(m);
-		det = det * pivot;
-		if (fabs(pivot) < 1.e-5) {
-			failed = true;
-			return false;
-		}
-		view_col<p>(m) /= -pivot;
-		for_each_constexpr<M>([&]<int i, int j>() {
-			if (i == p or j == p) return;
-			at<i, j>(m) += at<p, j>(m) * at<i, p>(m);
-		});
-		view_row<p>(m) /= pivot;
-		at<p, p>(m) = T{1}/ pivot;
-		return true;
-	});
-	if (failed) {
-		return {0., m};
-	}
-	return {det, m};
+    bool failed{false};
+    for_constexpr<0, N>([&]<int p>() -> bool {
+        auto pivot = at<p, p>(m);
+        det = det * pivot;
+        if (fabs(pivot) < 1.e-5) {
+            failed = true;
+            return false;
+        }
+        view_col<p>(m) /= -pivot;
+        for_each_constexpr<M>([&]<int i, int j>() {
+            if (i == p or j == p) return;
+            at<i, j>(m) += at<p, j>(m) * at<i, p>(m);
+        });
+        view_row<p>(m) /= pivot;
+        at<p, p>(m) = T{1}/ pivot;
+        return true;
+    });
+    if (failed) {
+        return {0., m};
+    }
+    return {det, m};
 }
 
 /*! Transposed view
@@ -1021,7 +1021,7 @@ constexpr auto inv(M m) -> std::tuple<typename M::value_t, M> {
  */
 template <_concept::Matrix M>
 constexpr auto view_trans(M&& m) {
-	return View<cols_v<M>, rows_v<M>, stride_v<M>, value_t<M>, not transposed_v<M>>{m.data()};
+    return View<cols_v<M>, rows_v<M>, stride_v<M>, value_t<M>, not transposed_v<M>>{m.data()};
 }
 
 /*! Transposed
@@ -1042,7 +1042,7 @@ constexpr auto view_trans(M&& m) {
  */
 template <_concept::Matrix M>
 constexpr auto trans(M&& m) {
-	return Matrix{view_trans(m)};
+    return Matrix{view_trans(m)};
 }
 
 /*! Identity matrix
@@ -1063,9 +1063,9 @@ constexpr auto trans(M&& m) {
  */
 template <int Rows, int Cols, typename T>
 constexpr auto makeI() {
-	auto i = Matrix<Rows, Cols, T>{};
-	view_diag(i) = T{1};
-	return i;
+    auto i = Matrix<Rows, Cols, T>{};
+    view_diag(i) = T{1};
+    return i;
 }
 
 /*! Identity matrix
@@ -1085,7 +1085,7 @@ constexpr auto makeI() {
  */
 template <int N, typename T>
 constexpr auto makeI() {
-	return makeI<N, N, T>();
+    return makeI<N, N, T>();
 }
 
 
@@ -1107,12 +1107,12 @@ constexpr auto makeI() {
  */
 template <_concept::Vector V>
 constexpr auto norm(V const& v) {
-	auto acc = value_t<V>{};
-	for_each_constexpr<V>([&]<auto row, auto col>() {
-		acc += v(row, col)*v(row, col);
-	});
-	using std::sqrt;
-	return sqrt(acc);
+    auto acc = value_t<V>{};
+    for_each_constexpr<V>([&]<auto row, auto col>() {
+        acc += v(row, col)*v(row, col);
+    });
+    using std::sqrt;
+    return sqrt(acc);
 }
 
 /*! Compute abs
@@ -1135,8 +1135,8 @@ constexpr auto norm(V const& v) {
  */
 template <_concept::Matrix M>
 constexpr auto abs(M const& m) {
-	using std::abs;
-	return details::apply(m, [](auto e) constexpr { return abs(e); });
+    using std::abs;
+    return details::apply(m, [](auto e) constexpr { return abs(e); });
 }
 
 
@@ -1163,12 +1163,12 @@ constexpr auto abs(M const& m) {
  */
 template <_concept::Vector L, _concept::Vector R> requires(length_v<L> == length_v<R>)
 constexpr auto dot(L const& l, R const& r) {
-	using U = decltype(value<L>() * value_t<R>());
-	auto acc = U{};
-	for_constexpr<0, length_v<L>>([&]<int I>() {
-		acc += at<I>(l) * at<I>(r);
-	});
-	return acc;
+    using U = decltype(value<L>() * value_t<R>());
+    auto acc = U{};
+    for_constexpr<0, length_v<L>>([&]<int I>() {
+        acc += at<I>(l) * at<I>(r);
+    });
+    return acc;
 }
 
 /*! Outer product
@@ -1196,13 +1196,13 @@ constexpr auto dot(L const& l, R const& r) {
  */
 template <_concept::Vector L, _concept::Vector R>
 constexpr auto outerProd(L const& l, R const& r) {
-	if constexpr (cols_v<L> != 1) {
-		return outerProd(view_trans(l), r);
-	} else if constexpr (rows_v<R> != 1) {
-		return outerProd(l, view_trans(r));
-	} else {
-		return l * r;
-	}
+    if constexpr (cols_v<L> != 1) {
+        return outerProd(view_trans(l), r);
+    } else if constexpr (rows_v<R> != 1) {
+        return outerProd(l, view_trans(r));
+    } else {
+        return l * r;
+    }
 }
 
 }

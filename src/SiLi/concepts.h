@@ -121,37 +121,37 @@ namespace details {
 // !TODO for_constexpr, is there a standard solution?
 template <auto Iter, auto End, typename L> requires (std::is_same_v<void, decltype(std::declval<L>().template operator()<Iter>())>)
 constexpr void for_constexpr_void(L lambda) {
-	if constexpr(Iter != End) {
-		lambda.template operator()<Iter>();
-		for_constexpr<Iter+1, End>(lambda);
-	}
+    if constexpr(Iter != End) {
+        lambda.template operator()<Iter>();
+        for_constexpr<Iter+1, End>(lambda);
+    }
 }
 template <auto Iter, auto End, typename L> requires (std::is_same_v<bool, decltype(std::declval<L>().template operator()<Iter>())>)
 constexpr bool for_constexpr_bool(L lambda) {
-	if constexpr(Iter != End) {
-		auto r = lambda.template operator()<Iter>();
-		if (not r) {
-			return false;
-		}
-		return for_constexpr<Iter+1, End>(lambda);
-	}
-	return true;
+    if constexpr(Iter != End) {
+        auto r = lambda.template operator()<Iter>();
+        if (not r) {
+            return false;
+        }
+        return for_constexpr<Iter+1, End>(lambda);
+    }
+    return true;
 }
 }
 
 template <auto Begin, auto End, typename L>
 constexpr bool for_constexpr(L&& lambda) {
-	if constexpr (Begin == End) {
-		return true;
-	} else {
-		using R = decltype(std::declval<L>().template operator()<Begin>());
-		if constexpr (std::is_same_v<R, void>) {
-			details::for_constexpr_void<Begin, End>(std::forward<L>(lambda));
-			return true;
-		} else {
-			return details::for_constexpr_bool<Begin, End>(std::forward<L>(lambda));
-		}
-	}
+    if constexpr (Begin == End) {
+        return true;
+    } else {
+        using R = decltype(std::declval<L>().template operator()<Begin>());
+        if constexpr (std::is_same_v<R, void>) {
+            details::for_constexpr_void<Begin, End>(std::forward<L>(lambda));
+            return true;
+        } else {
+            return details::for_constexpr_bool<Begin, End>(std::forward<L>(lambda));
+        }
+    }
 }
 
 
@@ -160,35 +160,35 @@ namespace details {
 // !TODO for_each_constexpr, is there a standard solution?
 template <_concept::Matrix V, typename L>
 constexpr void for_each_constexpr_void(L&& lambda) {
-	for_constexpr<0, rows_v<V>>([&]<auto row>() constexpr {
-		for_constexpr<0, cols_v<V>>([&]<auto col>() constexpr {
-			lambda.template operator()<row, col>();
-		});
-	});
+    for_constexpr<0, rows_v<V>>([&]<auto row>() constexpr {
+        for_constexpr<0, cols_v<V>>([&]<auto col>() constexpr {
+            lambda.template operator()<row, col>();
+        });
+    });
 }
 template <_concept::Matrix V, typename L>
 constexpr bool for_each_constexpr_bool(L&& lambda) {
-	return for_constexpr<0, rows_v<V>>([&]<auto row>() constexpr {
-		return for_constexpr<0, cols_v<V>>([&]<auto col>() constexpr {
-			return lambda.template operator()<row, col>();
-		});
-	});
+    return for_constexpr<0, rows_v<V>>([&]<auto row>() constexpr {
+        return for_constexpr<0, cols_v<V>>([&]<auto col>() constexpr {
+            return lambda.template operator()<row, col>();
+        });
+    });
 }
 
 }
 template <_concept::Matrix V, typename L>
 constexpr bool for_each_constexpr(L&& lambda) {
-	if constexpr (rows_v<V> == 0 or cols_v<V> == 0) {
-		return true;
-	} else {
-		using R = decltype(std::declval<L>().template operator()<0, 0>());
-		if constexpr (std::is_same_v<R, void>) {
-			details::for_each_constexpr_void<V>(std::forward<L>(lambda));
-			return true;
-		} else {
-			return details::for_each_constexpr_bool<V>(std::forward<L>(lambda));
-		}
-	}
+    if constexpr (rows_v<V> == 0 or cols_v<V> == 0) {
+        return true;
+    } else {
+        using R = decltype(std::declval<L>().template operator()<0, 0>());
+        if constexpr (std::is_same_v<R, void>) {
+            details::for_each_constexpr_void<V>(std::forward<L>(lambda));
+            return true;
+        } else {
+            return details::for_each_constexpr_bool<V>(std::forward<L>(lambda));
+        }
+    }
 }
 
 
@@ -196,38 +196,38 @@ constexpr bool for_each_constexpr(L&& lambda) {
 
 template <_concept::Matrix V>
 constexpr auto get(V&& v, int row, int col) -> auto& {
-	if constexpr (transposed_v<V>) {
-		return v.data()[row + col * stride_v<V>];
-	} else {
-		return v.data()[col + row * stride_v<V>];
-	}
+    if constexpr (transposed_v<V>) {
+        return v.data()[row + col * stride_v<V>];
+    } else {
+        return v.data()[col + row * stride_v<V>];
+    }
 }
 
 template <_concept::Matrix V>
 constexpr auto get(V&& v, int entry) -> auto& requires(rows_v<V> == 1 or cols_v<V> == 1) {
-	if constexpr ((rows_v<V> == 1 and not transposed_v<V>) or (cols_v<V> == 1 and transposed_v<V>)) {
-		return v.data()[entry];
-	} else {
-		return v.data()[entry * stride_v<V>];
-	}
+    if constexpr ((rows_v<V> == 1 and not transposed_v<V>) or (cols_v<V> == 1 and transposed_v<V>)) {
+        return v.data()[entry];
+    } else {
+        return v.data()[entry * stride_v<V>];
+    }
 }
 
 template <int row, int col, _concept::Matrix M>
 constexpr auto get(M&& m) -> auto& {
-	if constexpr (transposed_v<M>) {
-		return m.data()[row + col * stride_v<M>];
-	} else {
-		return m.data()[col + row * stride_v<M>];
-	}
+    if constexpr (transposed_v<M>) {
+        return m.data()[row + col * stride_v<M>];
+    } else {
+        return m.data()[col + row * stride_v<M>];
+    }
 }
 
 template <int entry, _concept::Matrix M>
 constexpr auto get(M&& m) -> auto& requires(rows_v<M> == 1 or cols_v<M> == 1) {
-	if constexpr ((rows_v<M> == 1 and not transposed_v<M>) or (cols_v<M> == 1 and transposed_v<M>)) {
-		return m.data()[entry];
-	} else {
-		return m.data()[entry * stride_v<M>];
-	}
+    if constexpr ((rows_v<M> == 1 and not transposed_v<M>) or (cols_v<M> == 1 and transposed_v<M>)) {
+        return m.data()[entry];
+    } else {
+        return m.data()[entry * stride_v<M>];
+    }
 }
 
 
