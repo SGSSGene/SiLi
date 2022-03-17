@@ -125,9 +125,11 @@ template <_concept::Matrix L, _concept::Matrix R, typename Operator> requires (r
 constexpr auto apply(L const& l, R const& r, Operator op) {
     using U = decltype(op(value<L>(), value_t<R>()));
     auto ret = Matrix<rows_v<L>, cols_v<L>, U>{};
-    for_each_constexpr<L>([&]<auto row, auto col>() {
-        at<row, col>(ret) = op(at<row, col>(l), at<row, col>(r));
-    });
+    for (size_t iy{0}; iy < rows_v<L>; ++iy) {
+        for (size_t ix{0}; ix < cols_v<L>; ++ix) {
+            ret(ix, iy) = op(l(ix, iy), r(ix, iy));
+        }
+    }
     return ret;
 }
 
@@ -190,6 +192,15 @@ template <_concept::Matrix L, _concept::Matrix R>
 constexpr auto operator+(L const& l, R const& r) {
     return details::apply(l, r, [](auto _l, auto _r) constexpr { return _l + _r; });
 }
+
+template<size_t _rows, size_t _cols, typename T>
+constexpr auto operator+(Matrix<_rows, _cols, T> l, Matrix<_rows, _cols, T> const& r) {
+    for (size_t i{0}; i < _rows*_cols; ++i) {
+        l.data()[i] += r.data()[i];
+    }
+    return l;
+}
+
 
 /*! Elementwise addition
  * \shortexample l += r
@@ -316,17 +327,21 @@ constexpr auto operator*(L const& l, R const& r) {
 
     if constexpr (L::Rows == 1 and R::Cols == 1) {
         auto ret = U{};
-        for_constexpr<0, L::Cols>([&]<int I>() {
-            ret += at<I>(l) * at<I>(r);
-        });
+        for (size_t i{0}; i < L::Cols; ++i) {
+            ret += l(i) * r(i);
+        }
         return Matrix{{{ret}}};
     } else {
         auto ret = Matrix<L::Rows, R::Cols, U>{};
-        for_constexpr<0, L::Rows>([&]<int row>() {
-            for_constexpr<0, R::Cols>([&]<int col>() {
-                at<row, col>(ret) = U{view_row<row>(l) * view_col<col>(r)};
-            });
-        });
+        for (size_t iy{0}; iy < L::Rows; ++iy) {
+           for (size_t ix{0}; ix < R::Cols; ++ix) {
+                auto a = U{};
+                for (size_t i{0}; i < L::Cols; ++i) {
+                    a += l(iy, i) * r(i, ix);
+                }
+                ret(iy, ix) = a;
+           }
+        }
         return ret;
     }
 }
