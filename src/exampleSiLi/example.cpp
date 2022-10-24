@@ -2,6 +2,8 @@
 #include <SiLi/ostream.h>
 #include <SiLi/fmt.h>
 
+#include <iostream>
+
 int main() {
     // m1 is of type Matrix<3, 2, double>
     auto m1 = SiLi::Matrix{{{1., 0.},
