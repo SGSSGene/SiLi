@@ -1,6 +1,15 @@
 name: SiLi
-projects:
+translationSets:
+  - name: SiLi
+    type: library
+    language: c++
+    dependencies:
+      - stdlib
   - name: benchmarkSiLi
     type: executable
-    legacy:
-      systemLibraries: [armadillo]
+    language: c++
+    dependencies:
+      - catch2
+      - SiLi
+      - armadillo
+      - eigen3

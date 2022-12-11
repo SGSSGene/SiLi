@@ -32,5 +32,10 @@ int main() {
             std::cout << m1(row, col) << "\n";
         }
     }
+
+    SiLi::for_constexpr<0, 10>([&]<auto K>() {
+        static_assert(K < 10);
+        std::cout << "x:" << K << "\n";
+    });
 }
 

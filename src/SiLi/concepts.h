@@ -125,21 +125,14 @@ constexpr size_t length_v = ((detail::rows<T>::value==1)?detail::cols<T>::value:
 
 namespace details {
 // !TODO for_constexpr, is there a standard solution?
-template <auto Iter, auto End, typename L> requires (std::is_same_v<void, decltype(std::declval<L>().template operator()<Iter>())>)
-constexpr void for_constexpr_void(L lambda) {
-    if constexpr(Iter != End) {
-        lambda.template operator()<Iter>();
-        for_constexpr<Iter+1, End>(lambda);
-    }
-}
-template <auto Iter, auto End, typename L> requires (std::is_same_v<bool, decltype(std::declval<L>().template operator()<Iter>())>)
-constexpr bool for_constexpr_bool(L lambda) {
+template <auto Iter, auto End, typename L>
+constexpr bool for_constexpr_impl(L const& lambda) {
     if constexpr(Iter != End) {
         auto r = lambda.template operator()<Iter>();
         if (not r) {
             return false;
         }
-        return for_constexpr<Iter+1, End>(lambda);
+        return for_constexpr_impl<Iter+1, End>(lambda);
     }
     return true;
 }
@@ -152,10 +145,12 @@ constexpr bool for_constexpr(L&& lambda) {
     } else {
         using R = decltype(std::declval<L>().template operator()<Begin>());
         if constexpr (std::is_same_v<R, void>) {
-            details::for_constexpr_void<Begin, End>(std::forward<L>(lambda));
-            return true;
+            return details::for_constexpr_impl<Begin, End>([&]<auto Iter>() {
+                lambda.template operator()<Iter>();
+                return std::true_type{};
+            });
         } else {
-            return details::for_constexpr_bool<Begin, End>(std::forward<L>(lambda));
+            return details::for_constexpr_impl<Begin, End>(lambda);
         }
     }
 }
