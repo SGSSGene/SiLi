@@ -12,7 +12,7 @@ struct fmt::formatter<V> {
     }
 
     template <typename FormatContext>
-    auto format(V const& v, FormatContext& ctx) {
+    auto format(V const& v, FormatContext& ctx) const {
         for (size_t row {0}; row < SiLi::rows_v<V>; ++row) {
             for (size_t col {0}; col < SiLi::cols_v<V>; ++col) {
                 fmt::format_to(ctx.out(), "{} ", v(row, col));
