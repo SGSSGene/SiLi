@@ -20,7 +20,7 @@ include(cmake/CPM.cmake)
 if (PROJECT_IS_TOP_LEVEL)
     CPMAddPackage("gh:fmtlib/fmt#11.0.2@11.0.2")
     CPMAddPackage("gh:catchorg/Catch@3.7.0")
-#    CPMAddPackage("gh:SGSSGene/nanobench@4.3.11-2")
+    CPMAddPackage("gh:SGSSGene/nanobench@4.3.11-3")
 
     enable_testing()
 
@@ -51,5 +51,6 @@ if (PROJECT_IS_TOP_LEVEL)
         sili::sili
         Catch2::Catch2WithMain
         armadillo
+        nanobench::nanobench
     )
 endif()
