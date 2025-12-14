@@ -3,7 +3,7 @@
 
 #include <array>
 
-namespace SiLi_Mat {
+namespace sili_Mat {
 
 template<size_t TRows, size_t TCols, typename ...Ts>
 class Matrix {
@@ -63,7 +63,7 @@ Matrix(carray<T, N0>, carray<T, Ns>... list) -> Matrix<sizeof...(list)+1, N0, T>
 
 /*template<typename T, int N0, int ...Ns>
 auto g(carray<T, N0>, carray<T, Ns>... list) noexcept {
-    return SiLi_Mat::Matrix<sizeof...(list)+1, N0, T>{};
+    return sili_Mat::Matrix<sizeof...(list)+1, N0, T>{};
 }*/
 
 
@@ -504,7 +504,7 @@ auto det(MatrixView<rows, cols, Props, T const> const& mat) -> T {
 // member implementation
 template<int rows, int cols, typename Props, typename T>
 auto MatrixView<rows, cols, Props, T const>::det() const -> T {
-    return SiLi::det(*this);
+    return sili::det(*this);
 }
 
 template<int trows, int tcols, typename Props, typename T>
@@ -576,7 +576,7 @@ auto inv(MatrixView<rows, rows, Props, T const> const& _view) -> Matrix<rows, ro
 // member implementation
 template<int trows, int tcols, typename props, typename T>
 auto MatrixView<trows, tcols, props, T const>::inv() const -> Matrix<trows, tcols, T> {
-    return SiLi::inv(*this);
+    return sili::inv(*this);
 }
 
 // member implementation
@@ -762,7 +762,7 @@ auto sortSVD(int _rows, int _cols, SVD<rows, cols, T> const& _svd) -> SVD<rows, 
         return p1.first > p2.first;
     });
 
-    SiLi::SVD<rows, cols, T> sorted(_rows, _cols);
+    sili::SVD<rows, cols, T> sorted(_rows, _cols);
     assert(_cols == sorted.U.num_cols());
     assert(_cols == sorted.V.num_cols());
     assert(_cols == sorted.S.num_rows());
@@ -780,7 +780,7 @@ auto sortSVD(int _rows, int _cols, SVD<rows, cols, T> const& _svd) -> SVD<rows, 
 
 template <int _rows, int _cols, typename Props, typename T>
 auto svd(MatrixView<_rows, _cols, Props, T const> const& _view) -> SVD<_rows, _cols, T> {
-    using namespace ::SiLi::detail;
+    using namespace ::sili::detail;
     using namespace ::std;
     int const rows = _view.num_rows();
     int const cols = _view.num_cols();
@@ -972,7 +972,7 @@ auto svd(MatrixView<_rows, _cols, Props, T const> const& _view) -> SVD<_rows, _c
 // member implementation
 template<int trows, int tcols, typename props, typename T>
 auto MatrixView<trows, tcols, props, T const>::svd() const -> SVD<trows, tcols, T> {
-    return SiLi::svd(*this);
+    return sili::svd(*this);
 }
 
 template<int trows, int tcols, typename props, typename T>
@@ -1050,7 +1050,7 @@ auto isfinite(MatrixView<trows, tcols, props, T const> const& _view) -> bool {
  * ostream
  */
 template<int rows, int cols, typename Prop, typename T>
-std::ostream& operator<< (std::ostream& stream, SiLi::MatrixView<rows, cols, Prop, T const> const& view) {
+std::ostream& operator<< (std::ostream& stream, sili::MatrixView<rows, cols, Prop, T const> const& view) {
     if (rows != 1) {
         stream << "{\n";
     }

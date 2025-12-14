@@ -6,7 +6,7 @@
 #include <cmath>
 #include <tuple>
 
-namespace SiLi {
+namespace sili {
 
 struct End {};
 template <typename T>
@@ -30,7 +30,7 @@ constexpr auto value() -> typename std::add_rvalue_reference<value_t<T>>::type;
  * \return    returns reference to underlying element
  *
  * \code
- *   auto m = SiLi::Matrix{{{3, 4},
+ *   auto m = sili::Matrix{{{3, 4},
  *                          {5, 6}}};
  *   at<0, 0>(m) = 5;
  *   at<0, 1>(m) = 6;
@@ -56,7 +56,7 @@ constexpr auto at(M&& m) -> auto& {
  * \return    returns reference to underlying element
  *
  * \code
- *   auto m = SiLi::Matrix{{{3},
+ *   auto m = sili::Matrix{{{3},
  *                          {5}}};
  *   at<0>(m) = 5;
  *   at<1>(m) = 6;
@@ -81,7 +81,7 @@ constexpr auto at(V&& v) -> auto& {
  * \return  number of rows
  *
  * \code
- *   auto m = SiLi::Matrix{{{3, 4, 7},
+ *   auto m = sili::Matrix{{{3, 4, 7},
  *                          {5, 6, 8}}};
  *   std::cout << rows(m) << "\n"; // prints 2
  * \endcode
@@ -100,7 +100,7 @@ constexpr auto rows(M const&) {
  * \return   number of columns
  *
  * \code
- *   auto m = SiLi::Matrix{{{3, 4, 7},
+ *   auto m = sili::Matrix{{{3, 4, 7},
  *                          {5, 6, 8}}};
  *   std::cout << cols(m) << "\n"; // prints 3
  * \endcode
@@ -156,7 +156,7 @@ constexpr void self_assign_apply(L&& l, R const& r, Operator op) {
  * \return copy of m with ``+`` applied to every element
  *
  * \code
- *   auto m = SiLi::Matrix{{{3, 4, 7},
+ *   auto m = sili::Matrix{{{3, 4, 7},
  *                          {5, 6, 8}}};
  *   auto m2 = +m;
  *   std::cout << m << "\n";
@@ -179,9 +179,9 @@ constexpr auto operator+(M const& m) {
  * l and r must have the same dimension.
  *
  * \code
- *   auto a = SiLi::Matrix{{{3, 4, 7},
+ *   auto a = sili::Matrix{{{3, 4, 7},
  *                          {5, 6, 8}}};
- *   auto b = SiLi::Matrix{{{1, 2, 3},
+ *   auto b = sili::Matrix{{{1, 2, 3},
  *                          {4, 5, 6}}};
  *   auto c = a + b;
  *   std::cout << c << "\n"; // prints {{4,  6, 10},
@@ -222,9 +222,9 @@ constexpr auto operator+(Matrix<_rows, _cols, T1> l, Matrix<_rows, _cols, T2> co
  * l and r must have the same dimension.
  *
  * \code
- *   auto a = SiLi::Matrix{{{3, 4, 7},
+ *   auto a = sili::Matrix{{{3, 4, 7},
  *                          {5, 6, 8}}};
- *   auto b = SiLi::Matrix{{{1, 2, 3},
+ *   auto b = sili::Matrix{{{1, 2, 3},
  *                          {4, 5, 6}}};
  *   auto a += b;
  *   std::cout << a << "\n"; // prints {{4,  6, 10},
@@ -246,7 +246,7 @@ constexpr auto operator+=(L& l, R const& r) -> auto& {
  * \return  Matrix with negated elements
  *
  * \code
- *   auto m = SiLi::Matrix{{{3, 4, 7},
+ *   auto m = sili::Matrix{{{3, 4, 7},
  *                          {5, 6, 8}}};
  *   auto m2 = -m;
  *   std::cout << m << "\n";
@@ -269,9 +269,9 @@ constexpr auto operator-(M const& m) {
  * l and r must have the same dimension.
  *
  * \code
- *   auto a = SiLi::Matrix{{{3, 4, 7},
+ *   auto a = sili::Matrix{{{3, 4, 7},
  *                          {5, 6, 8}}};
- *   auto b = SiLi::Matrix{{{1, 2, 3},
+ *   auto b = sili::Matrix{{{1, 2, 3},
  *                          {4, 5, 6}}};
  *   auto c = a - b;
  *   std::cout << c << "\n"; // prints {{2,  2, 4},
@@ -294,9 +294,9 @@ constexpr auto operator-(L const& l, R const& r) {
  * l and r must have the same dimension.
  *
  * \code
- *   auto a = SiLi::Matrix{{{3, 4, 7},
+ *   auto a = sili::Matrix{{{3, 4, 7},
  *                          {5, 6, 8}}};
- *   auto b = SiLi::Matrix{{{1, 2, 3},
+ *   auto b = sili::Matrix{{{1, 2, 3},
  *                          {4, 5, 6}}};
  *   auto a += b;
  *   std::cout << a << "\n"; // prints {{2,  2, 4},
@@ -320,12 +320,12 @@ constexpr auto operator-=(L& l, R const& r) -> auto& {
  * l must have the same number of columns as r has rows.
  *
  * \code
- *   auto a = SiLi::Matrix{{{3, 4, 7},
+ *   auto a = sili::Matrix{{{3, 4, 7},
  *                          {5, 6, 8}}};
- *   auto b = SiLi::Matrix{{{1, 2},
+ *   auto b = sili::Matrix{{{1, 2},
  *                          {4, 5},
  *                          {3, 6}};
- *   auto c = a * b; // c is of type SiLi::Matrix<2, 2, int>
+ *   auto c = a * b; // c is of type sili::Matrix<2, 2, int>
  *   std::cout << c << "\n"; // prints {{40, 68},
  *                                      {53, 88}}
  * \endcode
@@ -364,7 +364,7 @@ constexpr auto operator*(L const& l, R const& r) {
  * \return Matrix with each element multiplied with s
  *
  * \code
- *   auto a = SiLi::Matrix{{{3, 4, 7},
+ *   auto a = sili::Matrix{{{3, 4, 7},
  *                          {5, 6, 8}}};
  *   auto c = a * 5;
  *   std::cout << c << "\n"; // prints {{15, 20, 35},
@@ -385,7 +385,7 @@ constexpr auto operator*(L const& l, value_t<L> const& s) {
  * \return Matrix with each element multiplied with s
  *
  * \code
- *   auto a = SiLi::Matrix{{{3, 4, 7},
+ *   auto a = sili::Matrix{{{3, 4, 7},
  *                          {5, 6, 8}}};
  *   auto c = 5 * a;
  *   std::cout << c << "\n"; // prints {{15, 20, 35},
@@ -406,7 +406,7 @@ constexpr auto operator*(value_t<R> const& s, R&& r) {
  * \return Referenc to l
  *
  * \code
- *   auto a = SiLi::Matrix{{{3, 4, 7},
+ *   auto a = sili::Matrix{{{3, 4, 7},
  *                          {5, 6, 8}}};
  *   auto a *= 5;
  *   std::cout << a << "\n"; // prints {{15, 20, 35},
@@ -428,7 +428,7 @@ constexpr auto operator*=(L&& l, value_t<L> const& s) -> auto& {
  * \return Matrix same size and type as l
  *
  * \code
- *   auto a = SiLi::Matrix{{{15, 20, 35},
+ *   auto a = sili::Matrix{{{15, 20, 35},
  *                          {25, 30, 40}}};
  *   auto c = a / 5;
  *   std::cout << c << "\n"; // prints {{3, 4, 7},
@@ -450,7 +450,7 @@ constexpr auto operator/(L const& l, value_t<L> const& s) {
  * \return  reference to l
  *
  * \code
- *   auto a = SiLi::Matrix{{{15, 20, 35},
+ *   auto a = sili::Matrix{{{15, 20, 35},
  *                          {25, 30, 40}}};
  *   a /= 5;
  *   std::cout << c << "\n"; // prints {{3, 4, 7},
@@ -474,12 +474,12 @@ constexpr auto operator/=(L&& l, value_t<L> const& s) -> L& {
  * l and r must have same dimensions
  *
  * \code
- *   auto a = SiLi::Matrix{{{15, 20, 35},
+ *   auto a = sili::Matrix{{{15, 20, 35},
  *                          {25, 30, 40}}};
  *
- *   auto b = SiLi::Matrix{{{15, 20, 35},
+ *   auto b = sili::Matrix{{{15, 20, 35},
  *                          {25, 30, 40}}};
- *   auto c = SiLi::Matrix{{{15, 20, 35},
+ *   auto c = sili::Matrix{{{15, 20, 35},
  *                          {25, 30, 43}}};
  *   std::cout << (a == b) << "\n"; // prints 1
  *   std::cout << (a == c) << "\n"; // prints 0
@@ -503,12 +503,12 @@ constexpr auto operator==(L const& l, R const& r) -> bool {
  * l and r must have same dimensions
  *
  * \code
- *   auto a = SiLi::Matrix{{{15, 20, 35},
+ *   auto a = sili::Matrix{{{15, 20, 35},
  *                          {25, 30, 40}}};
  *
- *   auto b = SiLi::Matrix{{{15, 20, 35},
+ *   auto b = sili::Matrix{{{15, 20, 35},
  *                          {25, 30, 40}}};
- *   auto c = SiLi::Matrix{{{15, 20, 35},
+ *   auto c = sili::Matrix{{{15, 20, 35},
  *                          {25, 30, 43}}};
  *   std::cout << (a != b) << "\n"; // prints 0
  *   std::cout << (a != c) << "\n"; // prints 1
@@ -527,7 +527,7 @@ constexpr auto operator!=(L const& l, R const& r) -> bool {
  * \return  View representing a column vector that gives access to the diagonal of m
  *
  * \code
- *   auto a = SiLi::Matrix{{{15, 20, 35},
+ *   auto a = sili::Matrix{{{15, 20, 35},
  *                          {25, 30, 40}}};
  *   auto v = view_diag(a);
  *   std::cout << rows(v) << "x" << cols(v) << "\n"; // prints 2x1
@@ -555,7 +555,7 @@ constexpr auto view_diag(M&& m) {
  * \return  Matrix as a column vector with the diagonal values of m
  *
  * \code
- *   auto a = SiLi::Matrix{{{15, 20, 35},
+ *   auto a = sili::Matrix{{{15, 20, 35},
  *                          {25, 30, 40}}};
  *   auto v = diag(a);
  *   std::cout << rows(v) << "x" << cols(v) << "\n"; // prints 2x1
@@ -577,7 +577,7 @@ constexpr auto diag(M const& m) {
  * The super diagonal is the diagonal above the diagonal
  *
  * \code
- *   auto a = SiLi::Matrix{{{15, 20, 35},
+ *   auto a = sili::Matrix{{{15, 20, 35},
  *                          {25, 30, 40}}};
  *   auto v = view_upper_diag(a);
  *   std::cout << rows(v) << "x" << cols(v) << "\n"; // prints 2x1
@@ -599,8 +599,8 @@ constexpr auto view_upper_diag(M&& m) {
  *
  * \param start_row starting row
  * \param start_col starting column
- * \param end_row   end row (exclusive). Use SiLi::End to indicate rows(v).
- * \param end_col   end column (exclusive). Use SiLi::End to indicate cols(v).
+ * \param end_row   end row (exclusive). Use sili::End to indicate rows(v).
+ * \param end_col   end column (exclusive). Use sili::End to indicate cols(v).
  * \param v         _concept::Matrix
  * \return          View
  *
@@ -608,7 +608,7 @@ constexpr auto view_upper_diag(M&& m) {
  * Returns a view onto a matrix
  *
  * \code
- *   auto a = SiLi::Matrix{{{ 1,  2,  3,  4,  5},
+ *   auto a = sili::Matrix{{{ 1,  2,  3,  4,  5},
  *                          { 6,  7,  8,  9, 10},
  *                          {11, 12, 13, 14, 15},
  *                          {16, 17, 18, 19, 20}}};
@@ -617,7 +617,7 @@ constexpr auto view_upper_diag(M&& m) {
  *   std::cout << v0 << "\n"; // prints {{ 7,  8},
  *                                        12, 13}
  *
- *   auto v1 = view<2, 3, SiLi::End, SiLi::End>(a);
+ *   auto v1 = view<2, 3, sili::End, sili::End>(a);
  *   std::cout << rows(v1) << "x" << cols(v1) << "\n"; // prints 2x2
  *   std::cout << v1 << "\n"; // prints {{14, 15},
  *                                        19, 20}
@@ -691,9 +691,9 @@ constexpr auto view_col(V&& v) {
  * l and r must have same number of rows.
  *
  * \code
- *   auto a = SiLi::Matrix{{{ 1,  2,  3},
+ *   auto a = sili::Matrix{{{ 1,  2,  3},
  *                          {11, 12, 13}}};
- *   auto b = SiLi::Matrix{{{ 4,  5,  6},
+ *   auto b = sili::Matrix{{{ 4,  5,  6},
  *                          {14, 15, 16}}};
 *    auto v = join_rows(a, b);
  *   std::cout << rows(v) << "x" << cols(v) << "\n"; // prints 2x6
@@ -720,9 +720,9 @@ constexpr auto join_rows(L const& l, R const& r) {
  * l and r must have same number of columns.
  *
  * \code
- *   auto a = SiLi::Matrix{{{ 1,  2,  3},
+ *   auto a = sili::Matrix{{{ 1,  2,  3},
  *                          {11, 12, 13}}};
- *   auto b = SiLi::Matrix{{{ 4,  5,  6},
+ *   auto b = sili::Matrix{{{ 4,  5,  6},
  *                          {14, 15, 16}}};
  *   auto v = join_cols(a, b);
  *   std::cout << rows(v) << "x" << cols(v) << "\n"; // prints 4x3
@@ -794,7 +794,7 @@ constexpr auto det(V const& v) {
  * \return  Determinant of m
  *
  * \code
- *   auto a = SiLi::Matrix{{{ 1,  2},
+ *   auto a = sili::Matrix{{{ 1,  2},
  *                          {11, 12}}};
  *   auto v = det(a);
  *   std::cout << v << "\n"; // prints -10
@@ -833,11 +833,11 @@ constexpr auto element_multi(L const& l, R const& r) {
  * \return  Matrix of size 3×1 with cross product of l and r.
  *
  * \code
- *   auto a = SiLi::Matrix{{{ 1},
+ *   auto a = sili::Matrix{{{ 1},
  *                          { 2},
  *                          { 3}}};
  *
- *   auto b = SiLi::Matrix{{{ 4},
+ *   auto b = sili::Matrix{{{ 4},
  *                          { 5},
  *                          { 6}}};
 
@@ -865,7 +865,7 @@ constexpr auto cross(L const& l, R const& r) {
  * \return  Sum off all elements of m.
  *
  * \code
- *   auto a = SiLi::Matrix{{{3, 4, 7},
+ *   auto a = sili::Matrix{{{3, 4, 7},
  *                          {5, 6, 8}}};
  *   auto c = sum(a)
  *   std::cout << c << "\n"; // prints 33
@@ -888,7 +888,7 @@ constexpr auto sum(M const& m) {
  * \return  Column vector with the sums of each row of m
  *
  * \code
- *   auto a = SiLi::Matrix{{{3, 4, 7},
+ *   auto a = sili::Matrix{{{3, 4, 7},
  *                          {5, 6, 8}}};
  *   auto c = sum_rows(a)
  *   std::cout << c << "\n"; // prints {{14}
@@ -913,7 +913,7 @@ constexpr auto sum_rows(M const& m) {
  * \return  Row vector with the sums of each column of m
  *
  * \code
- *   auto a = SiLi::Matrix{{{3, 4, 7},
+ *   auto a = sili::Matrix{{{3, 4, 7},
  *                          {5, 6, 8}}};
  *   auto c = sum_cols(a)
  *   std::cout << c << "\n"; // prints {{8, 10, 15}}
@@ -990,7 +990,7 @@ constexpr auto inv(M const& m) -> std::tuple<typename M::value_t, M> {
  * \return   Returns tuple of determinant and inverse, if detereminant is zero the inverse is invalid.
  *
  * \code
- *   auto a = SiLi::Matrix{{{ 1.,  2.},
+ *   auto a = sili::Matrix{{{ 1.,  2.},
  *                          {11., 12.}}};
  *   auto [v, m] = inv(a);
  *   std::cout << v << "\n"; // prints -10
@@ -1035,7 +1035,7 @@ constexpr auto inv(M m) -> std::tuple<typename M::value_t, M> {
  * \return   Matrix of the transposed of m
  *
  * \code
- *   auto a = SiLi::Matrix{{{ 1,  2,  3},
+ *   auto a = sili::Matrix{{{ 1,  2,  3},
  *                          {11, 12,  4}}};
  *   auto v = view_trans(a);
  *   std::cout << m << "\n"; // prints {{1, 11},
@@ -1056,7 +1056,7 @@ constexpr auto view_trans(M&& m) {
  * \return   Matrix of the transposed of m
  *
  * \code
- *   auto a = SiLi::Matrix{{{ 1,  2,  3},
+ *   auto a = sili::Matrix{{{ 1,  2,  3},
  *                          {11, 12,  4}}};
  *   auto v = trans(a);
  *   std::cout << m << "\n"; // prints {{1, 11},
@@ -1070,7 +1070,7 @@ constexpr auto trans(M&& m) {
 }
 
 /*! Identity matrix
- * \shortexample SiLi::makeI<Rows, Cols, int>()
+ * \shortexample sili::makeI<Rows, Cols, int>()
  * \group Free Matrix Functions
  *
  * \param Rows number of rows
@@ -1079,7 +1079,7 @@ constexpr auto trans(M&& m) {
  * \return     matrix with ones on the diagonal
  *
  * \code
- *   auto a = SiLi::makeI<3, 4, int>();
+ *   auto a = sili::makeI<3, 4, int>();
  *   std::cout << a << "\n"; // prints {{1, 0, 0, 0},
  *                                      {0, 1, 0, 0},
  *                                      {0, 0, 1, 0}}
@@ -1093,7 +1093,7 @@ constexpr auto makeI() {
 }
 
 /*! Identity matrix
- * \shortexample SiLi::makeI<N, int>()
+ * \shortexample sili::makeI<N, int>()
  * \group Free Matrix Functions
  *
  * \param N size of the matrix
@@ -1101,7 +1101,7 @@ constexpr auto makeI() {
  * \return  matrix with ones on the diagonal
  *
  * \code
- *   auto a = SiLi::makeI<3, int>();
+ *   auto a = sili::makeI<3, int>();
  *   std::cout << a << "\n"; // prints {{1, 0, 0},
  *                                      {0, 1, 0},
  *                                      {0, 0, 1}}
@@ -1121,7 +1121,7 @@ constexpr auto makeI() {
  * \return  the norm (also considered as the length).
  *
  * \code
- *   auto a = SiLi::Matrix{{{ 3.},
+ *   auto a = sili::Matrix{{{ 3.},
  *                          { 4.},
  *                          { 5.}}};
  *
@@ -1147,7 +1147,7 @@ constexpr auto norm(V const& v) {
  * \return  the absolute values
  *
  * \code
- *   auto a = SiLi::Matrix{{{ -3.},
+ *   auto a = sili::Matrix{{{ -3.},
  *                          { -4.},
  *                          { -5.}}};
  *
@@ -1173,11 +1173,11 @@ constexpr auto abs(M const& m) {
  * \return  the dot product (also called scalar product) of l and r. l and r must be vectors of the same length
  *
  * \code
- *   auto a = SiLi::Matrix{{{ 1},
+ *   auto a = sili::Matrix{{{ 1},
  *                          { 2},
  *                          { 3}}};
  *
- *   auto b = SiLi::Matrix{{{ 4},
+ *   auto b = sili::Matrix{{{ 4},
  *                          { 5},
  *                          { 6}}};
  *
@@ -1204,11 +1204,11 @@ constexpr auto dot(L const& l, R const& r) {
  * \return  Matrix with the outer product of l and r
  *
  * \code
- *   auto a = SiLi::Matrix{{{ 1},
+ *   auto a = sili::Matrix{{{ 1},
  *                          { 2},
  *                          { 3}}};
  *
- *   auto b = SiLi::Matrix{{{ 4},
+ *   auto b = sili::Matrix{{{ 4},
  *                          { 5},
  *                          { 6}}};
  *

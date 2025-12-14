@@ -1,17 +1,17 @@
-#include <SiLi/SiLi.h>
-#include <SiLi/ostream.h>
-#include <SiLi/fmt.h>
+#include <sili/sili.h>
+#include <sili/ostream.h>
+#include <sili/fmt.h>
 
 #include <iostream>
 
 int main() {
     // m1 is of type Matrix<3, 2, double>
-    auto m1 = SiLi::Matrix{{{1., 0.},
+    auto m1 = sili::Matrix{{{1., 0.},
                             {0., 1.},
                             {3., 4.}}};
 
     // m2 is of type Matrix<2, 3, double>
-    auto m2 = SiLi::Matrix{{{1., 0., 3.},
+    auto m2 = sili::Matrix{{{1., 0., 3.},
                             {0., 1., 4.}}};
 
     // m3 is of type Matrix<3, 3, double>
@@ -33,7 +33,7 @@ int main() {
         }
     }
 
-    SiLi::for_constexpr<0, 10>([&]<auto K>() {
+    sili::for_constexpr<0, 10>([&]<auto K>() {
         static_assert(K < 10);
         std::cout << "x:" << K << "\n";
     });

@@ -4,7 +4,7 @@
 
 #include <array>
 
-namespace SiLi {
+namespace sili {
 
 /*! Represents a matrix
  *

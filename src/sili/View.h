@@ -2,7 +2,7 @@
 
 #include "concepts.h"
 
-namespace SiLi {
+namespace sili {
 
 /*! Represents a view onto a matrix
  *

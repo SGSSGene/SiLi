@@ -3,7 +3,7 @@
 #define CATCH_CONFIG_ENABLE_BENCHMARKING
 #include <catch2/catch_all.hpp>
 
-#include <SiLi/SiLi.h>
+#include <sili/sili.h>
 #include <armadillo>
 #include <eigen3/Eigen/Dense>
 #include <random>

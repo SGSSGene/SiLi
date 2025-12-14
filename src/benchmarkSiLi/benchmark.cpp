@@ -9,9 +9,9 @@ void benchmarkAddition() {
     auto data = GenerateData<T, N>{};
     auto bench = ankerl::nanobench::Bench{};
     {
-        auto [m1, m2] = data.template getMatrix<SiLi::Matrix<N, N, T>>();
-        bench.run(prefix + "addition - SiLi", [&]() {
-            auto z  = SiLi::Matrix{m1 + m2};
+        auto [m1, m2] = data.template getMatrix<sili::Matrix<N, N, T>>();
+        bench.run(prefix + "addition - sili", [&]() {
+            auto z  = sili::Matrix{m1 + m2};
             ankerl::nanobench::doNotOptimizeAway(z);
         });
     }
@@ -36,9 +36,9 @@ void benchmarkMultiplication() {
     auto data = GenerateData<T, N>{};
     auto bench = ankerl::nanobench::Bench{};
     {
-        auto [m1, m2] = data.template getMatrix<SiLi::Matrix<N, N, T>>();
-        bench.run(prefix + "multiplication - SiLi", [&]() {
-            auto z  = SiLi::Matrix{m1 * m2};
+        auto [m1, m2] = data.template getMatrix<sili::Matrix<N, N, T>>();
+        bench.run(prefix + "multiplication - sili", [&]() {
+            auto z  = sili::Matrix{m1 * m2};
             ankerl::nanobench::doNotOptimizeAway(z);
         });
     }
@@ -63,8 +63,8 @@ void benchmarkDet() {
     auto data = GenerateData<T, N>{};
     auto bench = ankerl::nanobench::Bench{};
     {
-        auto [m1, m2] = data.template getMatrix<SiLi::Matrix<N, N, T>>();
-        bench.run(prefix + "determinant - SiLi", [&]() {
+        auto [m1, m2] = data.template getMatrix<sili::Matrix<N, N, T>>();
+        bench.run(prefix + "determinant - sili", [&]() {
             auto z  = det(m1);
             ankerl::nanobench::doNotOptimizeAway(z);
         });
@@ -90,8 +90,8 @@ void benchmarkInv() {
     auto data = GenerateData<T, N>{};
     auto bench = ankerl::nanobench::Bench{};
     {
-        auto [m1, m2] = data.template getMatrix<SiLi::Matrix<N, N, T>>();
-        bench.run(prefix + "inverse - SiLi", [&]() {
+        auto [m1, m2] = data.template getMatrix<sili::Matrix<N, N, T>>();
+        bench.run(prefix + "inverse - sili", [&]() {
             auto z  = inv(m1);
             ankerl::nanobench::doNotOptimizeAway(z);
         });

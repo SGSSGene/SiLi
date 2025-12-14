@@ -1,0 +1,81 @@
+{
+  "format_version": "1",
+  "options": [
+    {
+        "name": "SILI_BUILD_TEST",
+        "description": "build tests for this project",
+        "default": "${PROJECT_IS_TOP_LEVEL}"
+    },
+    {
+        "name": "SILI_BUILD_BENCHMARK",
+        "description": "build benchmarks for this project",
+        "default": "${PROJECT_IS_TOP_LEVEL}"
+    },
+    {
+        "name": "SILI_BUILD_DEMO",
+        "description": "build demonstrator for this project",
+        "default": "${PROJECT_IS_TOP_LEVEL}"
+    }
+  ],
+  "translationsets": [
+    {
+      "name": "sili::sili",
+      "type": "library",
+      "test_header": true,
+      "language": "cxx_std_20",
+    },
+    {
+      "name": "benchmarkSiLi",
+      "type": "executable",
+      "dependencies": [
+        "sili::sili",
+        "Catch2::Catch2WithMain",
+        "armadillo",
+        "nanobench::nanobench",
+      ]
+    },
+    {
+      "name": "exampleSiLi",
+      "type": "executable",
+      "dependencies": [
+        "sili::sili",
+        "Catch2::Catch2WithMain",
+        "fmt::fmt",
+      ]
+    },
+    {
+      "name": "testSiLi",
+      "type": "executable",
+      "test": true,
+      "dependencies": [
+        "sili::sili",
+        "Catch2::Catch2WithMain",
+      ]
+    },
+
+  ],
+  "packages": [
+    {
+      "name": "nanobench",
+      "version": "4.3.11-3",
+      "github_repository": "SGSSGene/nanobench"
+    },
+    {
+      "if": "SILI_BUILD_BENCHMARK OR SILI_BUILD_TEST",
+      "name": "Catch2",
+      "version": "3.11.0",
+      "github_repository": "catchorg/Catch2"
+    },
+    {
+      "if": "SILI_BUILD_BENCHMARK OR SILI_BUILD_TEST",
+      "name": "fmt",
+      "version": "12.1.0",
+      "github_repository": "fmtlib/fmt",
+      "git_tag": "{VERSION}",
+      "options": [
+        "FMT_INSTALL ON",
+      ]
+    },
+
+  ]
+}

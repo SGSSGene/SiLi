@@ -2,7 +2,7 @@
 
 #include "concepts.h"
 
-namespace SiLi {
+namespace sili {
 
 template <_concept::Matrix V>
 struct Iterator {

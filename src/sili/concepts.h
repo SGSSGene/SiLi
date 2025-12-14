@@ -4,7 +4,7 @@
 #include <type_traits>
 #include <utility>
 
-namespace SiLi {
+namespace sili {
 
 template<size_t, size_t, typename, typename...>
 class Matrix;

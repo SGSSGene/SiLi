@@ -1,12 +1,13 @@
 #pragma once
+#if 0
 
-#include "SiLi.h"
+#include "sili.h"
 
-namespace SiLi {
+namespace sili {
     /*
      * Quaternion
      *
-     * internal representation SiLi::Matrix<4, 1>(w, x, y, z)
+     * internal representation sili::Matrix<4, 1>(w, x, y, z)
      */
     template <typename T = DefaultType>
     class Quaternion {
@@ -103,9 +104,9 @@ namespace SiLi {
         }
 
     public:
-        auto mat() const -> SiLi::Matrix<3, 3, T> {
+        auto mat() const -> sili::Matrix<3, 3, T> {
             auto const& q = mValue;
-            auto R = SiLi::make_eye<3, 3, double>();
+            auto R = sili::make_eye<3, 3, double>();
             R(0, 0) = 1 - 2 * (q(2)*q(2) + q(3)*q(3));
             R(0, 1) = -2*q(0)*q(3) + 2*q(1)*q(2);
             R(0, 2) = 2*q(0)*q(2) + 2*q(1)*q(3);
@@ -153,7 +154,7 @@ namespace SiLi {
             return *this;
         }
 
-        operator SiLi::Matrix<3, 3, T>() const {
+        operator sili::Matrix<3, 3, T>() const {
             return mat();
         }
 
@@ -187,7 +188,7 @@ namespace SiLi {
             return *this;
         }
 
-        auto rotate(SiLi::Matrix<3, 1, T> const& v) const -> SiLi::Matrix<3, 1, T> {
+        auto rotate(sili::Matrix<3, 1, T> const& v) const -> sili::Matrix<3, 1, T> {
             Quaternion q;
             q.real() = 0.;
             q.imag() = v;
@@ -233,3 +234,4 @@ std::ostream& operator<< (std::ostream& stream, Quaternion<T> const& q) {
 }
 
 }
+#endif

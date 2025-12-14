@@ -3,7 +3,7 @@
 /*! Overview
  * \page
  *
- * SiLi is a auto-storage only library (no heap allocation).
+ * sili is a auto-storage only library (no heap allocation).
  *
  * It uses **c++20** and its purpose is to be used on embedded system
  *
@@ -23,11 +23,11 @@
  * \page
  * Example of Element Access
  * \code
- *   #include <SiLi/SiLi.h>
- *   #include <SiLi/ostream.h>
+ *   #include <sili/sili.h>
+ *   #include <sili/ostream.h>
  *
  *   int main() {
- *       auto a = SiLi::Matrix{{{3, 4},
+ *       auto a = sili::Matrix{{{3, 4},
  *                              {5, 6}}};
  *       std::cout << a << "\n"; // prints {{3, 4},
  *                               //         {5, 6}}
@@ -42,16 +42,16 @@
 
  * Example of Matrix Multiplication:
  * \code
- *   #include <SiLi/SiLi.h>
- *   #include <SiLi/ostream.h>
+ *   #include <sili/sili.h>
+ *   #include <sili/ostream.h>
  *
  *   int main() {
- *       auto a = SiLi::Matrix{{{3, 4, 7},
+ *       auto a = sili::Matrix{{{3, 4, 7},
  *                              {5, 6, 8}}};
- *       auto b = SiLi::Matrix{{{1, 2},
+ *       auto b = sili::Matrix{{{1, 2},
  *                              {4, 5},
  *                              {3, 6}};
- *       auto c = a * b; // c is of type SiLi::Matrix<2, 2, int>
+ *       auto c = a * b; // c is of type sili::Matrix<2, 2, int>
  *       std::cout << c << "\n"; // prints {{40, 68},
  *                               //         {53, 88}}
  *   }
@@ -60,11 +60,11 @@
  *
  * Example of Matrix inversion:
  * \code
- *   #include <SiLi/SiLi.h>
- *   #include <SiLi/ostream.h>
+ *   #include <sili/sili.h>
+ *   #include <sili/ostream.h>
  *
  *   int main() {
- *       auto a = SiLi::Matrix{{{3, 4},
+ *       auto a = sili::Matrix{{{3, 4},
  *                              {5, 6}}};
  *       auto b = inv(a);
  *       std::cout << b << "\n"; \\ prints {{ -3,  2},
@@ -75,11 +75,11 @@
  *
  * Example of view
  * \code
- *   #include <SiLi/SiLi.h>
- *   #include <SiLi/ostream.h>
+ *   #include <sili/sili.h>
+ *   #include <sili/ostream.h>
  *
  *   int main() {
- *       auto a = SiLi::Matrix{{{ 3,  4, 5},
+ *       auto a = sili::Matrix{{{ 3,  4, 5},
  *                              { 6,  7, 8},
  *                              { 9, 10, 11}};
  *       std::cout << a << "\n"; // prints {{ 3,  4,  5},
