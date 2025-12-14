@@ -1,3 +1,6 @@
+// SPDX-FileCopyrightText: 2017 Lutz Freitag + Simon Gene Gottlieb
+// SPDX-License-Identifier: CC-BY-4.0
+
 #pragma once
 
 #define CATCH_CONFIG_ENABLE_BENCHMARKING

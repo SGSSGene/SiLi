@@ -1,3 +1,6 @@
+// SPDX-FileCopyrightText: 2017 Lutz Freitag + Simon Gene Gottlieb
+// SPDX-License-Identifier: MIT
+
 #pragma once
 #if 0
 

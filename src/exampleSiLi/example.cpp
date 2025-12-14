@@ -1,3 +1,6 @@
+// SPDX-FileCopyrightText: 2017 Lutz Freitag + Simon Gene Gottlieb
+// SPDX-License-Identifier: CC0-1.0
+
 #include <sili/sili.h>
 #include <sili/ostream.h>
 #include <sili/fmt.h>

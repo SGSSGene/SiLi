@@ -1,3 +1,8 @@
+<!--
+    SPDX-FileCopyrightText: 2017 Lutz Freitag + Simon Gene Gottlieb
+    SPDX-License-Identifier: CC-BY-4.0
+-->
+
 # SiLi
 A simple and basic linear algebra library for c++ using little code.
 
